@@ -69,6 +69,6 @@ module.exports = merge(common, {
     filename: 'static/js/bundle.js',
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: 'static/js/[name].chunk.js',
-    publicPath: '/',
+    publicPath: 'auto',
   },
 });

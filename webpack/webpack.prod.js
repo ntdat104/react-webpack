@@ -74,7 +74,7 @@ module.exports = merge(common, {
     }),
   ],
   output: {
-    publicPath: '',
+    publicPath: 'auto',
     pathinfo: true,
     // There will be one main bundle, and one file per asynchronous chunk.
     // In development, it does not produce real files.
