@@ -12,6 +12,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ImageminWebpack = require('image-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 const paths = require('../config/paths');
 const { appBuild, appPublic, appHtml } = paths;
 
@@ -21,6 +22,13 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: false,
   plugins: [
+    new ModuleFederationPlugin({
+      name: 'app',
+      remotes: {
+        Products:
+          'Products@https://micro-frontends.tuando.net/demo/react-example/products/dist/products.js',
+      },
+    }),
     new CopyWebpackPlugin({
       patterns: [
         {

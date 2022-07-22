@@ -1,39 +1,23 @@
-import React, { Suspense } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { history } from '@/store';
-import { ConnectedRouter } from 'connected-react-router';
-import { ToastContainer } from 'react-toastify';
-import { Helmet } from 'react-helmet-async';
+import React from 'react';
 
-import Layout from '@/layouts';
-import PageLoading from '@/components/page-loading';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const RelatedProducts = React.lazy(() => import('Products/App'));
 
-// multi language
-import '@/locales/i18n';
+const App: React.FC = (): JSX.Element => {
+  const [isCalled, setIsCalled] = React.useState(false);
 
-// load app SCSS styles
-import '@/styles/App.scss';
-
-// load Toast styles
-import 'react-toastify/dist/ReactToastify.css';
-
-const ReactApp: React.FC = () => {
   return (
-    <Router>
-      <Helmet titleTemplate="%s - React Starter" defaultTitle="React Starter">
-        <meta name="description" content="A React Starter application" />
-      </Helmet>
-
-      <ConnectedRouter history={history}>
-        <Suspense fallback={<PageLoading show />}>
-          <Layout />
-          <PageLoading />
-        </Suspense>
-      </ConnectedRouter>
-
-      <ToastContainer />
-    </Router>
+    <div>
+      <h1>{`Test`}</h1>
+      <button onClick={() => setIsCalled(!isCalled)}>Calling</button>
+      {isCalled && (
+        <React.Suspense fallback={<div>{`loading...`}</div>}>
+          <RelatedProducts />
+        </React.Suspense>
+      )}
+    </div>
   );
 };
 
-export default ReactApp;
+export default App;

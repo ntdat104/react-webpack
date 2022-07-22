@@ -4,6 +4,7 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const openBrowser = require('react-dev-utils/openBrowser');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 //   .BundleAnalyzerPlugin;
 const paths = require('../config/paths');
@@ -47,6 +48,13 @@ module.exports = merge(common, {
     },
   },
   plugins: [
+    new ModuleFederationPlugin({
+      name: 'app',
+      remotes: {
+        Products:
+          'Products@https://micro-frontends.tuando.net/demo/react-example/products/dist/products.js',
+      },
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: appHtml,
