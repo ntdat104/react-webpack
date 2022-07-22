@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 process.env.NODE_ENV = 'production';
 const path = require('path');
+const deps = require("../package.json").dependencies;
 const { merge } = require('webpack-merge');
 const webpack = require('webpack');
 const common = require('./webpack.common.js');
@@ -25,8 +26,16 @@ module.exports = merge(common, {
     new ModuleFederationPlugin({
       name: 'app',
       remotes: {
-        Products:
-          'Products@https://micro-frontends.tuando.net/demo/react-example/products/dist/products.js',
+        products: 'products@http://localhost:3001/static/js/products.js',
+      },
+      shared: {
+        ...deps,
+        react: { singleton: true, eager: true, requiredVersion: deps.react },
+        'react-dom': {
+          singleton: true,
+          eager: true,
+          requiredVersion: deps['react-dom'],
+        },
       },
     }),
     new CopyWebpackPlugin({
