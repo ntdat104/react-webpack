@@ -1,7 +1,7 @@
 ///<reference types="react" />
 
 declare module 'products/App' {
-  const RelatedProducts: React.ComponentType;
+  const ProductsRemote: React.ComponentType;
 
-  export default RelatedProducts;
+  export default ProductsRemote;
 }

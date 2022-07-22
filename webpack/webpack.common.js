@@ -4,9 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 const configPath = '../config';
 const paths = require(`${configPath}/paths`);
+const deps = require('../package.json').dependencies;
 const getClientEnvironment = require(`${configPath}/env`);
 
 const { appIndexJs, esLintFile, appBuild, publicUrlOrPath } = paths;
@@ -84,6 +86,22 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
+    new ModuleFederationPlugin({
+      name: 'app',
+      remotes: {
+        products:
+          'products@https://ntdat104-micro-frontends-products.surge.sh/static/js/products.js',
+      },
+      shared: {
+        ...deps,
+        react: { singleton: true, eager: true, requiredVersion: deps.react },
+        'react-dom': {
+          singleton: true,
+          eager: true,
+          requiredVersion: deps['react-dom'],
+        },
+      },
+    }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">

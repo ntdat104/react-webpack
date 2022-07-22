@@ -1,7 +1,6 @@
 /* eslint-disable indent */
 process.env.NODE_ENV = 'production';
 const path = require('path');
-const deps = require("../package.json").dependencies;
 const { merge } = require('webpack-merge');
 const webpack = require('webpack');
 const common = require('./webpack.common.js');
@@ -13,7 +12,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ImageminWebpack = require('image-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const { ModuleFederationPlugin } = require('webpack').container;
 const paths = require('../config/paths');
 const { appBuild, appPublic, appHtml } = paths;
 
@@ -23,21 +21,6 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: false,
   plugins: [
-    new ModuleFederationPlugin({
-      name: 'app',
-      remotes: {
-        products: 'products@http://localhost:3001/static/js/products.js',
-      },
-      shared: {
-        ...deps,
-        react: { singleton: true, eager: true, requiredVersion: deps.react },
-        'react-dom': {
-          singleton: true,
-          eager: true,
-          requiredVersion: deps['react-dom'],
-        },
-      },
-    }),
     new CopyWebpackPlugin({
       patterns: [
         {

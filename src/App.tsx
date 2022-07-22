@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RelatedProducts = React.lazy(() => import('products/App'));
+const ProductsRemote = React.lazy(() => import('products/App'));
 
 const App: React.FC = (): JSX.Element => {
   const [isCalled, setIsCalled] = React.useState(false);
@@ -11,7 +11,7 @@ const App: React.FC = (): JSX.Element => {
       <button onClick={() => setIsCalled(!isCalled)}>Calling</button>
       {isCalled && (
         <React.Suspense fallback={<div>{`loading...`}</div>}>
-          <RelatedProducts />
+          <ProductsRemote />
         </React.Suspense>
       )}
     </div>

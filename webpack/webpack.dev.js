@@ -4,11 +4,9 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const openBrowser = require('react-dev-utils/openBrowser');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { ModuleFederationPlugin } = require('webpack').container;
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 //   .BundleAnalyzerPlugin;
 const paths = require('../config/paths');
-const deps = require("../package.json").dependencies;
 
 const PORT = process.env.PORT || 3000;
 const host = process.env.HOST || '0.0.0.0';
@@ -49,21 +47,6 @@ module.exports = merge(common, {
     },
   },
   plugins: [
-    new ModuleFederationPlugin({
-      name: 'app',
-      remotes: {
-        products: 'products@http://localhost:3001/static/js/products.js',
-      },
-      shared: {
-        ...deps,
-        react: { singleton: true, eager: true, requiredVersion: deps.react },
-        'react-dom': {
-          singleton: true,
-          eager: true,
-          requiredVersion: deps['react-dom'],
-        },
-      },
-    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: appHtml,
